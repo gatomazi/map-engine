@@ -36,7 +36,10 @@ def _arte_response(req: ArteRequest) -> Response:
             resolucao=req.resolucao,
         )
         buf = io.BytesIO()
-        img.save(buf, format="PNG", optimize=True)
+        if req.resolucao == "preview":
+            img.save(buf, format="PNG", compress_level=3)
+        else:
+            img.save(buf, format="PNG", optimize=True)
         png_bytes = buf.getvalue()
         render_time = int((time.time() - t0) * 1000)
         return Response(

@@ -21,13 +21,23 @@ def gerar(localidades: list[dict], opcoes: dict | None = None) -> Image.Image:
     prefix = opcoes.get("texto_linha1")
     cor = opcoes.get("cor", "preto")
     somente_cores = ("preto",) if cor == "preto" else ("branco",)
+    preview = opcoes.get("resolucao") == "preview"
+    pintar_dpi = (
+        int(os.environ.get("PREVIEW_PINTAR_DPI", "120"))
+        if preview
+        else int(os.environ.get("FINAL_DPI", "300"))
+    )
 
     with tempfile.TemporaryDirectory() as tds:
         td = Path(tds)
         p_maps = td / "maps" / uf
         p_maps.mkdir(parents=True, exist_ok=True)
         r = processar_municipio(
-            nome_ibge, uf, pasta_uf_dest=p_maps, somente_cores=somente_cores
+            nome_ibge,
+            uf,
+            pasta_uf_dest=p_maps,
+            somente_cores=somente_cores,
+            png_dpi=pintar_dpi,
         )
         if not r or not r.get("arquivos"):
             raise RuntimeError(

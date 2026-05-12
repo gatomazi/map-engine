@@ -629,8 +629,8 @@ def _svg_municipio_isolado(uf, nome_cidade, mun_fill='#d6ba8d'):
 
 # ─── Renderização ─────────────────────────────────────────────────────────────
 
-def _svg_para_img(svg_bytes, vis_w, crop_box=None):
-    png = cairosvg.svg2png(bytestring=svg_bytes, dpi=300)
+def _svg_para_img(svg_bytes, vis_w, crop_box=None, dpi=300):
+    png = cairosvg.svg2png(bytestring=svg_bytes, dpi=dpi)
     img = Image.open(io.BytesIO(png)).convert("RGBA")
     if crop_box is None:
         arr = np.array(img)
@@ -676,6 +676,7 @@ def gerar_arte_v2c(
     nome_base,
     versao="escura",
     nome_exibicao=None,
+    png_dpi=300,
 ):
     pasta_destino.mkdir(parents=True, exist_ok=True)
     pal = _PALETAS[versao]
@@ -685,9 +686,9 @@ def gerar_arte_v2c(
 
     print(f"  🗺️  SVG V2-C ({uf}/{nome_cidade}) [{versao}]...")
 
-    img_solid, crop_box = _svg_para_img(_svg_solido_bytes(uf), vis_w)
+    img_solid, crop_box = _svg_para_img(_svg_solido_bytes(uf), vis_w, dpi=png_dpi)
     img_outline = _criar_outline_estado(img_solid, cor=pal['outline'])
-    img_mun, _  = _svg_para_img(_svg_municipio_isolado(uf, nome_cidade, mun_fill=pal['mun_fill']), vis_w, crop_box=crop_box)
+    img_mun, _  = _svg_para_img(_svg_municipio_isolado(uf, nome_cidade, mun_fill=pal['mun_fill']), vis_w, crop_box=crop_box, dpi=png_dpi)
 
     # ── Busca ano de fundação ──────────────────────────────────────────────────
     print(f"  📅 Buscando ano de fundação...")
@@ -869,10 +870,15 @@ def gerar(localidades: list[dict], opcoes: dict | None = None) -> Image.Image:
     nome_ibge = loc["municipio"]
     topo = opcoes.get("texto_linha2") or nome_ibge
     versao = "escura" if opcoes.get("cor", "preto") == "preto" else "clara"
+    dpi_svg = (
+        int(os.environ.get("PREVIEW_SVG_DPI", "96"))
+        if opcoes.get("resolucao") == "preview"
+        else int(os.environ.get("FINAL_DPI", "300"))
+    )
     with tempfile.TemporaryDirectory() as tds:
         td = Path(tds)
         gerar_arte_v2c(
-            nome_ibge, uf, td, "mapout", versao=versao, nome_exibicao=topo
+            nome_ibge, uf, td, "mapout", versao=versao, nome_exibicao=topo, png_dpi=dpi_svg
         )
         suf = "preto" if versao == "escura" else "branco"
         p = td / f"mapout_arte_{suf}.png"

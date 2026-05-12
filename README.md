@@ -29,6 +29,12 @@ cp .env.example .env
 uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
+## Performance (preview vs final)
+
+- Use sempre **`"resolucao": "preview"`** ou **`POST /arte/preview`** no customizador: reduz DPI do Cairo (`PREVIEW_SVG_DPI`, `PREVIEW_PINTAR_DPI` no estilo **completa**), thumbnail final (`PREVIEW_MAX_DIM`) e PNG mais leve na resposta.
+- **`final`** mantém qualidade de impressão (`FINAL_DPI`, pintar em 300).
+- Resolver **`"Cidade, UF"`** explícito evita busca ampla no IBGE. Cache em memória do IBGE (lista de municípios) aquece após a primeira chamada.
+
 ## Endpoints
 
 | Método | Caminho | Descrição |

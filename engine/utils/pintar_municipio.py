@@ -883,7 +883,9 @@ def extrair_cor_do_svg(svg_tree):
     return '#000000'  # Default preto
 
 
-def processar_municipio(cidade, uf, pasta_uf_dest=None, somente_cores=None):
+def processar_municipio(
+    cidade, uf, pasta_uf_dest=None, somente_cores=None, png_dpi=None
+):
     """Processa um município e gera os PNGs usando os SVGs originais.
 
     pasta_uf_dest: se informado, grava os PNGs nessa pasta (ex.: temp dir da API).
@@ -891,6 +893,9 @@ def processar_municipio(cidade, uf, pasta_uf_dest=None, somente_cores=None):
 
     somente_cores: se ``("preto",)`` ou ``("branco",)``, gera só essa variante de mapa
     (menos I/O e Cairo). ``None`` = preto e branco, como no CLI original.
+
+    png_dpi: DPI do ``cairosvg.svg2png`` ao exportar o mapa pintado. ``None`` usa
+    ``PINTAR_PNG_DPI`` ou ``FINAL_DPI`` (padrão 300).
     """
     print(f"\n{'='*60}")
     print(f"📍 Processando: {cidade}/{uf}")
@@ -982,6 +987,7 @@ def processar_municipio(cidade, uf, pasta_uf_dest=None, somente_cores=None):
             nome_oficial,
             output_dir=pasta_uf,
             geojson_municipio=geojson_municipio,
+            png_dpi=png_dpi,
         )
         if resultado:
             resultados.append(resultado)
@@ -1000,6 +1006,7 @@ def processar_municipio(cidade, uf, pasta_uf_dest=None, somente_cores=None):
             nome_oficial,
             output_dir=pasta_uf,
             geojson_municipio=geojson_municipio,
+            png_dpi=png_dpi,
         )
         if resultado:
             resultados.append(resultado)
@@ -1012,9 +1019,27 @@ def processar_municipio(cidade, uf, pasta_uf_dest=None, somente_cores=None):
     }
 
 
-def processar_svg(svg_path, centroide_geo, bounds_estado, bounds_municipio, codigo, nome_arquivo, cor, nome_oficial=None, output_dir=None, geojson_municipio=None):
+def processar_svg(
+    svg_path,
+    centroide_geo,
+    bounds_estado,
+    bounds_municipio,
+    codigo,
+    nome_arquivo,
+    cor,
+    nome_oficial=None,
+    output_dir=None,
+    geojson_municipio=None,
+    png_dpi=None,
+):
     """Processa um SVG e gera o PNG com o município pintado."""
     try:
+        if png_dpi is None:
+            png_dpi = int(
+                os.environ.get(
+                    "PINTAR_PNG_DPI", os.environ.get("FINAL_DPI", "300")
+                )
+            )
         # Carrega o SVG
         parser = etree.XMLParser(remove_blank_text=True)
         svg_tree = etree.parse(str(svg_path), parser)
@@ -1139,7 +1164,7 @@ def processar_svg(svg_path, centroide_geo, bounds_estado, bounds_municipio, codi
         cairosvg.svg2png(
             bytestring=svg_content,
             write_to=str(png_saida),
-            dpi=300  # Alta resolução
+            dpi=png_dpi,
         )
         
         print(f"      ✅ PNG: {png_saida}")
