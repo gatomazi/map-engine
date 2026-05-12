@@ -1,0 +1,54 @@
+engine/utils/pintar_municipio.py
+  s_3ba00d6b63a8cc::t_ab19c6765b92f4 886-891
+  s_3ba00d6b63a8cc::t_f8730c043ae775 20-21
+  s_3ba00d6b63a8cc::t_701f391e00d265 957-961
+  s_3ba00d6b63a8cc::t_6cb65380041784 12-16
+  s_3ba00d6b63a8cc::t_41b1f2642c89a3 22-27
+  s_3ba00d6b63a8cc::t_829d168cf17ce9 19
+engine/utils/svg_municipio_paint.py
+  s_3ba00d6b63a8cc::t_73f966f7976eb4 1-79
+engine/estilos/v1d.py
+  s_3ba00d6b63a8cc::t_3333642ea438aa 19
+  s_3ba00d6b63a8cc::t_c5848adadb9566 144
+engine/estilos/v1d2.py
+  s_3ba00d6b63a8cc::t_8df284db268e68 1-4,6,8-299
+engine/estilos/v2c.py
+  s_3ba00d6b63a8cc::t_327fc93432a766 32-46
+  s_3ba00d6b63a8cc::t_771520988ddab1 672-684
+  s_3ba00d6b63a8cc::t_e4dd1dbbe8bbd0 17
+  s_3ba00d6b63a8cc::t_fde779b328fcca 22
+  s_3ba00d6b63a8cc::t_cf0b63068c46c0 571
+  s_3ba00d6b63a8cc::t_d11a0c6d846dcc 103-106
+  s_3ba00d6b63a8cc::t_b4be2edda80dc5 726-727
+  s_3ba00d6b63a8cc::t_751dfa320d47e8 860-886
+engine/estilos/completa.py
+  s_3ba00d6b63a8cc::t_33ad06700daded 1,3-5,7-65
+engine/estilos/v1e.py
+  s_3ba00d6b63a8cc::t_e386fdb218838e 1-3,5,7-285
+engine/estilos/v1a.py
+  s_3ba00d6b63a8cc::t_0baddf5aca6cc0 1,3,5-243
+engine/estilos/completa_impl.py
+  s_3ba00d6b63a8cc::t_8cbf9c9a306dd4 204-215
+  s_3ba00d6b63a8cc::t_37d42635045c39 19-55
+  s_3ba00d6b63a8cc::t_d60aaf5bdee981 63-78
+  s_3ba00d6b63a8cc::t_9ab8932a80df3b 222
+  s_3ba00d6b63a8cc::t_1e30533e554fb4 547-577
+  s_3ba00d6b63a8cc::t_42ba200943c5c0 603
+  s_3ba00d6b63a8cc::t_5edb1523b59c19 630-661
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "5830d105ce26fa49f7188f42c81ca83251506e3c",
+  "prompts": {},
+  "sessions": {
+    "s_3ba00d6b63a8cc": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "6eb4ac06-9ffb-4985-a812-a4550c6b841b",
+        "model": "default"
+      },
+      "human_author": "gtomazi_meli <gabriel.tomazi@mercadolivre.com>"
+    }
+  }
+}
