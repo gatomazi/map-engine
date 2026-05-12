@@ -553,6 +553,7 @@ def gerar_arte(
     nome_base,
     prefix=None,
     nome_exibicao=None,
+    somente_variante=None,
 ):
     pasta_destino.mkdir(parents=True, exist_ok=True)
     font = carregar_fonte()
@@ -587,6 +588,8 @@ def gerar_arte(
         ("branco", scaled_b, COR_TEXTO_BRANCO, cfg['cor_b']),
         ("preto",  scaled_p, COR_TEXTO_PRETO,  cfg['cor_p']),
     ]
+    if somente_variante in ("branco", "preto"):
+        variantes = [v for v in variantes if v[0] == somente_variante]
 
     for variante, scaled_map, cor_texto, cor_linha in variantes:
         canvas = Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))

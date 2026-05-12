@@ -883,11 +883,14 @@ def extrair_cor_do_svg(svg_tree):
     return '#000000'  # Default preto
 
 
-def processar_municipio(cidade, uf, pasta_uf_dest=None):
+def processar_municipio(cidade, uf, pasta_uf_dest=None, somente_cores=None):
     """Processa um município e gera os PNGs usando os SVGs originais.
 
     pasta_uf_dest: se informado, grava os PNGs nessa pasta (ex.: temp dir da API).
     Caso contrário, usa OUTPUT_DIR/pintar_municipio/{UF}/.
+
+    somente_cores: se ``("preto",)`` ou ``("branco",)``, gera só essa variante de mapa
+    (menos I/O e Cairo). ``None`` = preto e branco, como no CLI original.
     """
     print(f"\n{'='*60}")
     print(f"📍 Processando: {cidade}/{uf}")
@@ -960,8 +963,13 @@ def processar_municipio(cidade, uf, pasta_uf_dest=None):
     else:
         pasta_uf = PASTA_SAIDA / uf.upper()
 
+    def _quer(cor: str) -> bool:
+        if somente_cores is None:
+            return True
+        return cor in somente_cores
+
     # 5. Processa versão preta
-    if svg_preto_path:
+    if svg_preto_path and _quer("preto"):
         print(f"\n   🎨 Processando versão PRETA ({svg_preto_path.name})...")
         resultado = processar_svg(
             svg_preto_path,
@@ -979,7 +987,7 @@ def processar_municipio(cidade, uf, pasta_uf_dest=None):
             resultados.append(resultado)
 
     # 6. Processa versão branca
-    if svg_branco_path:
+    if svg_branco_path and _quer("branco"):
         print(f"\n   🎨 Processando versão BRANCA ({svg_branco_path.name})...")
         resultado = processar_svg(
             svg_branco_path,
