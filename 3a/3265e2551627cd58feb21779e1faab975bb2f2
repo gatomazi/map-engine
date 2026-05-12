@@ -1,0 +1,31 @@
+.env.example
+  s_3ba00d6b63a8cc::t_eb408adcd65da9 6
+api/routes/arte.py
+  s_3ba00d6b63a8cc::t_355928ef045e73 53-54
+engine/utils/svg_pendentes.py
+  s_3ba00d6b63a8cc::t_0ba7b1a9d10e8c 26-33
+engine/estilos/v1d.py
+  s_3ba00d6b63a8cc::t_91ae73a5e17e1d 1-4,6,8-211,213-262,266-292,295,300-353,356-372
+  s_3ba00d6b63a8cc::t_3cbaf895bc72ed 212
+  s_3ba00d6b63a8cc::t_8a0ec9e40ec5b8 354-355
+  s_3ba00d6b63a8cc::t_c595cd39e594fc 293-294,296-299
+  s_3ba00d6b63a8cc::t_687ac211ad2728 263-265
+README.md
+  s_3ba00d6b63a8cc::t_810172043a99a4 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "3a3265e2551627cd58feb21779e1faab975bb2f2",
+  "prompts": {},
+  "sessions": {
+    "s_3ba00d6b63a8cc": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "6eb4ac06-9ffb-4985-a812-a4550c6b841b",
+        "model": "default"
+      },
+      "human_author": "gtomazi_meli <gabriel.tomazi@mercadolivre.com>"
+    }
+  }
+}
