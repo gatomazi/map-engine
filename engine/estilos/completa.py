@@ -1,13 +1,17 @@
 from __future__ import annotations
 
+import logging
 import os
 import tempfile
+import time
 from pathlib import Path
 
 from PIL import Image
 
 from engine.estilos import completa_impl
 from engine.utils.pintar_municipio import processar_municipio
+
+log = logging.getLogger("map_engine.estilos.completa")
 
 
 def gerar(localidades: list[dict], opcoes: dict | None = None) -> Image.Image:
@@ -32,6 +36,7 @@ def gerar(localidades: list[dict], opcoes: dict | None = None) -> Image.Image:
         td = Path(tds)
         p_maps = td / "maps" / uf
         p_maps.mkdir(parents=True, exist_ok=True)
+        t_maps = time.perf_counter()
         r = processar_municipio(
             nome_ibge,
             uf,
@@ -39,6 +44,7 @@ def gerar(localidades: list[dict], opcoes: dict | None = None) -> Image.Image:
             somente_cores=somente_cores,
             png_dpi=pintar_dpi,
         )
+        ms_pintar = int((time.perf_counter() - t_maps) * 1000)
         if not r or not r.get("arquivos"):
             raise RuntimeError(
                 f"Falha ao gerar mapas pintados para {nome_ibge}/{uf} "
@@ -60,6 +66,7 @@ def gerar(localidades: list[dict], opcoes: dict | None = None) -> Image.Image:
         nome_oficial = r["municipio"]
         n_arq = completa_impl.nome_arquivo(nome_oficial)
         out_dir = td / "arte"
+        t_arte = time.perf_counter()
         completa_impl.gerar_arte(
             nome_oficial,
             uf,
@@ -71,6 +78,14 @@ def gerar(localidades: list[dict], opcoes: dict | None = None) -> Image.Image:
             nome_exibicao=nome_exibir,
             somente_variante=cor,
             centroide_geo=r.get("centroide_geo"),
+        )
+        ms_gerar_arte = int((time.perf_counter() - t_arte) * 1000)
+        log.info(
+            "completa_timing pintar_municipio_ms=%s gerar_arte_ms=%s preview=%s dpi=%s",
+            ms_pintar,
+            ms_gerar_arte,
+            preview,
+            pintar_dpi,
         )
         suf = "preto" if cor == "preto" else "branco"
         img_path = out_dir / f"{n_arq}_arte_{suf}.png"

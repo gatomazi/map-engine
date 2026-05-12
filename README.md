@@ -34,6 +34,7 @@ uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 - Use sempre **`"resolucao": "preview"`** ou **`POST /arte/preview`** no customizador: reduz DPI do Cairo (`PREVIEW_SVG_DPI`, `PREVIEW_PINTAR_DPI` no estilo **completa**), thumbnail final (`PREVIEW_MAX_DIM`) e PNG mais leve na resposta.
 - **`final`** mantém qualidade de impressão (`FINAL_DPI`, pintar em 300).
 - Estilo **completa**: o centróide vindo de `processar_municipio` evita refazer várias chamadas IBGE em `gerar_arte` (cai no path rápido com 1 GET da malha do estado).
+- **Diagnóstico:** no `POST /arte`, veja headers `X-Time-Resolve-Ms`, `X-Time-Gerar-Ms`, `X-Time-Png-Ms`, `X-Render-Time` e `X-Request-Time-Ms` (middleware). Logs: `map_engine.arte` (`arte_timing`) e `map_engine.estilos.completa` (`completa_timing` = pintar vs `gerar_arte`).
 - Resolver **`"Cidade, UF"`** explícito evita busca ampla no IBGE. Cache em memória do IBGE (lista de municípios) aquece após a primeira chamada.
 
 ## Endpoints

@@ -8,6 +8,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from api.limiter import limiter
+from api.middleware.request_timing import RequestTimingMiddleware
 from api.routes import arte, batch, validar
 
 app = FastAPI(title="Map Engine API", version="1.0.0")
@@ -19,7 +20,16 @@ app.add_middleware(
     allow_origins=["*"],
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
+    expose_headers=[
+        "X-Render-Time",
+        "X-Request-Time-Ms",
+        "X-Time-Resolve-Ms",
+        "X-Time-Gerar-Ms",
+        "X-Time-Png-Ms",
+        "X-Localidades",
+    ],
 )
+app.add_middleware(RequestTimingMiddleware)
 
 app.include_router(arte.router)
 app.include_router(batch.router)

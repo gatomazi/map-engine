@@ -1,4 +1,5 @@
 import io
+import logging
 import os
 import time
 
@@ -12,6 +13,7 @@ from engine.utils.localidade import buscar_ibge_e_osm, resolver_localidades
 from engine.utils.localidade_exceptions import LocalidadeNaoEncontrada
 
 router = APIRouter(tags=["arte"])
+log = logging.getLogger("map_engine.arte")
 
 _MAX_LOC = int(os.environ.get("MAX_LOCALIDADES", "10"))
 
@@ -22,9 +24,13 @@ def _arte_response(req: ArteRequest) -> Response:
             status_code=400,
             detail=f"Máximo de {_MAX_LOC} localidades por requisição",
         )
-    t0 = time.time()
+    t0 = time.perf_counter()
     try:
+        t_a = time.perf_counter()
         localidades_resolvidas = resolver_localidades(req.localidades)
+        ms_resolve = int((time.perf_counter() - t_a) * 1000)
+
+        t_b = time.perf_counter()
         img = dispatcher.gerar(
             localidades=localidades_resolvidas,
             texto_linha1=req.texto_linha1,
@@ -35,18 +41,37 @@ def _arte_response(req: ArteRequest) -> Response:
             cor=req.cor,
             resolucao=req.resolucao,
         )
+        ms_gerar = int((time.perf_counter() - t_b) * 1000)
+
+        t_c = time.perf_counter()
         buf = io.BytesIO()
         if req.resolucao == "preview":
             img.save(buf, format="PNG", compress_level=3)
         else:
             img.save(buf, format="PNG", optimize=True)
         png_bytes = buf.getvalue()
-        render_time = int((time.time() - t0) * 1000)
+        ms_png = int((time.perf_counter() - t_c) * 1000)
+
+        render_time = int((time.perf_counter() - t0) * 1000)
+        log.info(
+            "arte_timing estilo=%s resolucao=%s cor=%s resolve_ms=%s gerar_ms=%s png_ms=%s total_ms=%s locs=%s",
+            req.estilo,
+            req.resolucao,
+            req.cor,
+            ms_resolve,
+            ms_gerar,
+            ms_png,
+            render_time,
+            len(localidades_resolvidas),
+        )
         return Response(
             content=png_bytes,
             media_type="image/png",
             headers={
                 "X-Render-Time": str(render_time),
+                "X-Time-Resolve-Ms": str(ms_resolve),
+                "X-Time-Gerar-Ms": str(ms_gerar),
+                "X-Time-Png-Ms": str(ms_png),
                 "X-Localidades": str(len(localidades_resolvidas)),
                 "Cache-Control": "no-store",
             },
