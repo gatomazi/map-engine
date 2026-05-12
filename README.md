@@ -1,6 +1,6 @@
 # Map Engine API
 
-API FastAPI que expõe os estilos de arte geográfica (ver `estamparia/BRIEFING_MAPENGINE.md` no repo irmão). Este repositório está **escalado**: estrutura, endpoints, `coordenadas`/`contorno` vindos de `arte-lojas`, e **placeholders PNG** nos seis estilos até migrar `gerar_arte_*.py`.
+API FastAPI que expõe os estilos de arte geográfica (ver `estamparia/BRIEFING_MAPENGINE.md` no repo irmão). **Migrado:** `v1d` (lógica de `gerar_arte_v1d.py` + `processar_pendentes` como `engine/utils/svg_pendentes.py`). **Ainda placeholder:** `v1a`, `v1d2`, `v1e`, `v2c`, `completa`.
 
 ## Estrutura
 
