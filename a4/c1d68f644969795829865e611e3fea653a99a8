@@ -1,0 +1,26 @@
+engine/estilos/completa.py
+  s_3ba00d6b63a8cc::t_38e6cb97d5d6b7 22-23,29-31,40-44,62
+engine/estilos/completa_impl.py
+  s_3ba00d6b63a8cc::t_d01f3a19530d8a 556
+  s_3ba00d6b63a8cc::t_cf446f108ca353 591-592
+engine/utils/pintar_municipio.py
+  s_3ba00d6b63a8cc::t_29a44e75cd23f0 966-970,972
+  s_3ba00d6b63a8cc::t_08375a2ede0beb 990
+  s_3ba00d6b63a8cc::t_ada3565ae1169d 886,891-893
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "a4c1d68f644969795829865e611e3fea653a99a8",
+  "prompts": {},
+  "sessions": {
+    "s_3ba00d6b63a8cc": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "6eb4ac06-9ffb-4985-a812-a4550c6b841b",
+        "model": "default"
+      },
+      "human_author": "gtomazi_meli <gabriel.tomazi@mercadolivre.com>"
+    }
+  }
+}
