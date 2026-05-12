@@ -1,0 +1,38 @@
+.env.example
+  s_3ba00d6b63a8cc::t_2e3edc1462b4d9 6
+  s_3ba00d6b63a8cc::t_a86211b4b6bf53 9-10
+engine/utils/pintar_municipio.py
+  s_3ba00d6b63a8cc::t_f40c41bd236fbd 1167
+  s_3ba00d6b63a8cc::t_516fddcaa67bfb 886-888
+  s_3ba00d6b63a8cc::t_f01670dfa914c8 1022-1034,1037-1042
+  s_3ba00d6b63a8cc::t_97d090c172ae50 990
+  s_3ba00d6b63a8cc::t_1a218aa8e35f66 896-898
+  s_3ba00d6b63a8cc::t_82b8fef6b657ae 1009
+api/routes/arte.py
+  s_3ba00d6b63a8cc::t_1dbf36f1cc6f39 39-42
+README.md
+  s_3ba00d6b63a8cc::t_42d2e813a3ed0b 32-37
+engine/estilos/v2c.py
+  s_3ba00d6b63a8cc::t_d245ff6e064167 632-633
+  s_3ba00d6b63a8cc::t_1a8271ba77e70f 679
+  s_3ba00d6b63a8cc::t_ebdc5c8754801f 873-877,881
+  s_3ba00d6b63a8cc::t_a8b930353ac727 689,691
+engine/estilos/completa.py
+  s_3ba00d6b63a8cc::t_a0a9be116a4367 24-29,36-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "04c47ecc6420721d7e0865bbf80703e5725d8bd8",
+  "prompts": {},
+  "sessions": {
+    "s_3ba00d6b63a8cc": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "6eb4ac06-9ffb-4985-a812-a4550c6b841b",
+        "model": "default"
+      },
+      "human_author": "gtomazi_meli <gabriel.tomazi@mercadolivre.com>"
+    }
+  }
+}
