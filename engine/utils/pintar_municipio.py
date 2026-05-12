@@ -1015,7 +1015,8 @@ def processar_municipio(
         "municipio": nome_oficial,
         "codigo": codigo,
         "uf": uf,
-        "arquivos": resultados
+        "arquivos": resultados,
+        "centroide_geo": centroide_municipio,
     }
 
 

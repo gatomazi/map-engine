@@ -70,6 +70,7 @@ def gerar(localidades: list[dict], opcoes: dict | None = None) -> Image.Image:
             prefix=prefix,
             nome_exibicao=nome_exibir,
             somente_variante=cor,
+            centroide_geo=r.get("centroide_geo"),
         )
         suf = "preto" if cor == "preto" else "branco"
         img_path = out_dir / f"{n_arq}_arte_{suf}.png"

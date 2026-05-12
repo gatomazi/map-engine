@@ -415,6 +415,43 @@ def encontrar_centroide_no_mapa(nome_cidade, uf, map_path):
         return int(xs.mean()), int(ys.mean())
 
 
+def projetar_centroide_geo_no_mapa(centroide_lon, centroide_lat, uf, map_path):
+    """
+    Projeta (lon, lat) WGS84 já conhecido para pixels do PNG do mapa pintado,
+    com **uma** requisição IBGE (malha do estado). Usado após ``processar_municipio``
+    para evitar repetir malhas de município/estado de ``centroide_via_svg``.
+    """
+    import requests
+
+    url_est = (
+        f"https://servicodados.ibge.gov.br/api/v3/malhas/estados/{uf}"
+        "?formato=application/vnd.geo+json&qualidade=minima"
+    )
+    gj_est = requests.get(url_est, timeout=30).json()
+    coords_est = []
+
+    def _walk_est(obj):
+        if isinstance(obj, list):
+            if len(obj) >= 2 and isinstance(obj[0], (int, float)):
+                coords_est.append((obj[0], obj[1]))
+            else:
+                for item in obj:
+                    _walk_est(item)
+        elif isinstance(obj, dict):
+            for v in obj.values():
+                _walk_est(v)
+
+    _walk_est(gj_est)
+    lons = [c[0] for c in coords_est]
+    lats = [c[1] for c in coords_est]
+    if not lons:
+        raise ValueError("GeoJSON do estado sem coordenadas")
+    geo_bounds = (min(lons), max(lons), min(lats), max(lats))
+    vis_bounds = _obter_vis_bounds_rgba(map_path)
+    cx, cy = _geo_para_pixel(centroide_lon, centroide_lat, geo_bounds, vis_bounds)
+    return int(cx), int(cy)
+
+
 def centroide_no_canvas(map_path, scaled_map, map_cx, map_cy, vis_x, vis_y):
     """
     Converte o centroide do arquivo original para coordenadas do canvas.
@@ -554,6 +591,7 @@ def gerar_arte(
     prefix=None,
     nome_exibicao=None,
     somente_variante=None,
+    centroide_geo=None,
 ):
     pasta_destino.mkdir(parents=True, exist_ok=True)
     font = carregar_fonte()
@@ -564,12 +602,32 @@ def gerar_arte(
     scaled_b, off_x, off_y = preparar_mapa(map_branco_path, uf)
     scaled_p, _, _ = preparar_mapa(map_preto_path, uf)
 
-    # Centroide do município no canvas (via path SVG — coordenadas exatas)
-    try:
-        cx_file, cy_file = centroide_via_svg(nome_ibge, uf)
-    except Exception as e:
-        print(f"  ⚠️  SVG centroid falhou ({e}), usando IBGE GeoJSON")
-        cx_file, cy_file = encontrar_centroide_no_mapa(nome_ibge, uf, map_branco_path)
+    # Centroide do município no canvas
+    if centroide_geo is not None:
+        try:
+            cx_file, cy_file = projetar_centroide_geo_no_mapa(
+                float(centroide_geo[0]),
+                float(centroide_geo[1]),
+                uf,
+                map_branco_path,
+            )
+        except Exception as e:
+            print(f"  ⚠️  Projeção rápida falhou ({e}), tentando path SVG…")
+            try:
+                cx_file, cy_file = centroide_via_svg(nome_ibge, uf)
+            except Exception as e2:
+                print(f"  ⚠️  SVG centroid falhou ({e2}), usando IBGE GeoJSON")
+                cx_file, cy_file = encontrar_centroide_no_mapa(
+                    nome_ibge, uf, map_branco_path
+                )
+    else:
+        try:
+            cx_file, cy_file = centroide_via_svg(nome_ibge, uf)
+        except Exception as e:
+            print(f"  ⚠️  SVG centroid falhou ({e}), usando IBGE GeoJSON")
+            cx_file, cy_file = encontrar_centroide_no_mapa(
+                nome_ibge, uf, map_branco_path
+            )
     city_cx, city_cy = centroide_no_canvas(
         map_branco_path, scaled_b, cx_file, cy_file, off_x, off_y
     )
