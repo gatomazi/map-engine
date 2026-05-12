@@ -1,10 +1,11 @@
 """
-Composição final do mapa + tipografia (ex-gerar_arte_completa).
-Migrar de `arte-lojas/gerar_arte_completa.py`.
+Fachada da arte estilo «completa» (mapa + tipografia + linha).
+
+A implementação está em `engine.estilos.completa_impl`; a API usa `engine.estilos.completa.gerar`.
 """
 
 from __future__ import annotations
 
+from engine.estilos.completa_impl import gerar_arte, nome_arquivo
 
-def compor(mapa, opcoes: dict | None = None):
-    raise NotImplementedError("Migrar gerar_arte_completa.py para engine.compor")
+__all__ = ["gerar_arte", "nome_arquivo"]

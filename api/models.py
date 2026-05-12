@@ -20,3 +20,8 @@ class BatchEstadoBody(BaseModel):
         default_factory=lambda: ["todos"],
         description='Use ["todos"] ou lista de nomes de municípios',
     )
+    texto_linha1: str = "LÁ DE"
+    texto_legenda: Optional[str] = None
+    posicao: Literal["top", "center", "bottom"] = "center"
+    cor: Literal["preto", "branco"] = "preto"
+    resolucao: Literal["preview", "final"] = "preview"

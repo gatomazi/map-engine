@@ -1,12 +1,11 @@
 """
-Unifica pintar_municipio + pintar_multiplos_municipios (arte-lojas).
-Migrar lógica de `arte-lojas/pintar_municipio.py` e `pintar_multiplos_municipios.py`.
+Fachada do pipeline de pintar município em SVG → PNG.
+
+A implementação completa está em `engine.utils.pintar_municipio` (vendored de arte-lojas).
 """
 
 from __future__ import annotations
 
+from engine.utils.pintar_municipio import processar_municipio
 
-def pintar(localidades: list[dict]):
-    raise NotImplementedError(
-        "Migrar pintar_municipio.py / pintar_multiplos_municipios.py para engine.pintar"
-    )
+__all__ = ["processar_municipio"]

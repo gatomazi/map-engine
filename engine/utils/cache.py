@@ -18,10 +18,14 @@ ASSETS_DIR = Path(os.environ.get("ASSETS_DIR", str(_default_assets())))
 
 
 def _carregar_svg_estado(uf: str) -> str:
-    path = ASSETS_DIR / "svg_estados" / f"{uf.upper()}.svg"
-    if not path.is_file():
-        raise FileNotFoundError(f"SVG do estado não encontrado: {path}")
-    return path.read_text(encoding="utf-8")
+    """Carrega o primeiro SVG de estado encontrado (nomes usados no arte-lojas)."""
+    u = uf.upper()
+    base = ASSETS_DIR / "svg_estados"
+    for name in (f"{u}_branco.svg", f"{u}_preto.svg", f"{u}.svg"):
+        path = base / name
+        if path.is_file():
+            return path.read_text(encoding="utf-8")
+    raise FileNotFoundError(f"SVG do estado não encontrado em {base} ({u}_branco/preto/.svg)")
 
 
 def get_svg_estado(uf: str) -> str:

@@ -62,13 +62,17 @@ async def listar_estilos():
         {
             "id": "completa",
             "nome": "Completa",
-            "descricao": "Mapa completo (migrar de gerar_arte_completa.py)",
+            "descricao": "Mapa pintado + LÁ DE + linha ao centroide (Kesong)",
         },
-        {"id": "v1a", "nome": "V1-A", "descricao": "Contorno fino + município em destaque"},
-        {"id": "v1d", "nome": "V1-D", "descricao": "Bordas internas + contorno grosso"},
-        {"id": "v1d2", "nome": "V1-D2", "descricao": "Variação V1-D"},
-        {"id": "v1e", "nome": "V1-E", "descricao": "Estilo V1-E"},
-        {"id": "v2c", "nome": "V2-C", "descricao": "Estilo V2-C"},
+        {
+            "id": "v1a",
+            "nome": "V1-A",
+            "descricao": "Mapa isolado + contorno + tipografia (multi-município mesmo UF)",
+        },
+        {"id": "v1d", "nome": "V1-D", "descricao": "Bordas internas + anel de contorno + destaque"},
+        {"id": "v1d2", "nome": "V1-D2", "descricao": "Variação V1-D (vis menor, tipografia ajustada)"},
+        {"id": "v1e", "nome": "V1-E", "descricao": "Retrofia + Grotesk + mapa estilo V1-D"},
+        {"id": "v2c", "nome": "V2-C", "descricao": "Mapa + ano de fundação + Fraunces"},
     ]
 
 
